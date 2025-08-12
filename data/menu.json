@@ -1,0 +1,59 @@
+{
+  "currency": "CAD",
+  "pizza": {
+    "sizes": [
+      { "id": "s", "label": "Small",  "base": 10.99 },
+      { "id": "m", "label": "Medium", "base": 14.99 },
+      { "id": "l", "label": "Large",  "base": 18.99 }
+    ],
+    "crust": [
+      { "id": "regular", "label": "Regular", "upcharge": 0 },
+      { "id": "thin",    "label": "Thin",    "upcharge": 0 }
+    ],
+    "cheese": [
+      { "id": "normal", "label": "Normal", "upcharge": 0 },
+      { "id": "light",  "label": "Light",  "upcharge": 0 },
+      { "id": "extra",  "label": "Extra",  "upcharge": 2.00 }
+    ],
+    "toppings": {
+      "meats": [
+        { "id": "pep", "label": "Pepperoni", "price": 1.75 },
+        { "id": "ham", "label": "Ham",       "price": 1.75 },
+        { "id": "bac", "label": "Bacon",     "price": 1.75 }
+      ],
+      "veggies": [
+        { "id": "mush", "label": "Mushrooms", "price": 1.50 },
+        { "id": "oliv", "label": "Olives",    "price": 1.50 },
+        { "id": "pepp", "label": "Peppers",   "price": 1.50 }
+      ],
+      "premium": [
+        { "id": "ccpep", "label": "Cup & Char Pepperoni", "price": 2.25 }
+      ]
+    },
+    "specialties": [
+      { "id": "meatlovers", "label": "Meat Lover", "size": "l", "preset": ["pep","ham","bac"] },
+      { "id": "hawaiian",   "label": "Hawaiian",   "size": "l", "preset": ["ham"] },
+      { "id": "veggie",     "label": "Veggie",     "size": "l", "preset": ["mush","pepp","oliv"] }
+    ]
+  },
+  "calzones": [
+    { "id": "calz", "label": "Calzone", "base": 11.99, "fills": ["pep","ham","mush","oliv"] }
+  ],
+  "wings": {
+    "sizes": [
+      { "id": "10", "label": "10 pc", "price": 13.99 },
+      { "id": "20", "label": "20 pc", "price": 24.99 }
+    ],
+    "flavours": ["Mild","Medium","Hot","Honey Garlic","BBQ"]
+  },
+  "subs": [
+    { "id": "meatball", "label": "Meatball Sub", "price": 10.99 },
+    { "id": "pizza",    "label": "Pizza Sub",    "price": 9.99 }
+  ],
+  "salads": [
+    { "id": "caesar", "label": "Caesar Salad", "price": 7.99, "options": [{ "id":"chicken","label":"Add Chicken","price":3.00 }] }
+  ],
+  "drinks": [
+    { "id": "pop", "label": "Pop", "price": 1.99 }
+  ]
+}

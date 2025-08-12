@@ -1,12 +1,13 @@
 {
   "businessName": "Shakespeare Pizza",
+  "domain": "https://example.com", 
   "phone": "226-648-8888",
-  "address": "2264 Line 34, Unit 2, Shakespeare, ON N0B 2P0",
   "email": "orders@example.com",
+  "address": "2264 Line 34, Unit 2, Shakespeare, ON N0B 2P0",
   "timezone": "America/Toronto",
   "taxRate": 0.13,
   "tipOptions": [0, 0.1, 0.15, 0.18, 0.2],
-  "paymentMode": "links",            
+  "paymentMode": "links",    
   "clover": {
     "paymentLinks": [
       { "label": "Large 1-Topping", "url": "" },
@@ -14,5 +15,16 @@
     ],
     "merchantId": "",
     "ecomKey": ""
+  },
+  "social": {
+    "instagram": "https://instagram.com/shakespearepizza",
+    "facebook": "https://facebook.com/shakespearepizza"
+  },
+  "map": {
+    "googleMapsUrl": "https://www.google.com/maps?q=2264+Line+34,+Unit+2,+Shakespeare,+ON"
+  },
+  "analytics": {
+    "gtagId": "",                  
+    "plausibleDomain": ""           
   }
 }
