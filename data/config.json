@@ -1,0 +1,18 @@
+{
+  "businessName": "Shakespeare Pizza",
+  "phone": "226-648-8888",
+  "address": "2264 Line 34, Unit 2, Shakespeare, ON N0B 2P0",
+  "email": "orders@example.com",
+  "timezone": "America/Toronto",
+  "taxRate": 0.13,
+  "tipOptions": [0, 0.1, 0.15, 0.18, 0.2],
+  "paymentMode": "links",            
+  "clover": {
+    "paymentLinks": [
+      { "label": "Large 1-Topping", "url": "" },
+      { "label": "Two Slice + Pop", "url": "" }
+    ],
+    "merchantId": "",
+    "ecomKey": ""
+  }
+}
