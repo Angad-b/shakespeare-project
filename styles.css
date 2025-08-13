@@ -202,11 +202,6 @@ h2 { font-size: clamp(1.5rem, 2.2vw + 1rem, 2.2rem); margin: 0 0 1.25rem; }
 .btn { min-height: 44px; padding: .72rem 1rem; font-size: 0.95rem; }
 .btn-quiet { border-color: var(--glass-border); background: rgba(255,255,255,0.08); }
 
-/* --- Static yellow hero background (no spin) --- */
-.hero--yellow .bg {
-  background: #ffc52e; /* clean yellow */
-  animation: none;     /* stop swirl/rotation */
-}
 
 /* Improve contrast of text/buttons on yellow */
 .hero--yellow .content { color: #111; }
@@ -258,7 +253,7 @@ h2 { font-size: clamp(1.5rem, 2.2vw + 1rem, 2.2rem); margin: 0 0 1.25rem; }
 
 /* Force solid light-yellow background (no gradients/spin) */
 .hero--yellow,
-.hero--yellow .bg { background: #ffe37a !important; }
+.hero--yellow .bg { background: url(assets/img/hero-bg.png) !important; }
 .hero--yellow .bg { animation: none !important; filter: none !important; }
 
 /* Make text dark on yellow for contrast */
@@ -276,6 +271,9 @@ h2 { font-size: clamp(1.5rem, 2.2vw + 1rem, 2.2rem); margin: 0 0 1.25rem; }
 .pizza-img.spin {
   animation: rotate360 16s linear infinite;
   will-change: transform;
+  filter:
+    drop-shadow(0 0 32px rgba(255,122,24,0.50)) /* orange glow */
+    drop-shadow(0 50px 40px rgba(0,0,0,.30)); /* keep original shadow */
 }
 @keyframes rotate360 { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce){
