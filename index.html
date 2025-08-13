@@ -110,26 +110,378 @@
 
   <!-- Main content -->
   <main id="main">
-    <!-- HERO (animated radial + rotating pizza) -->
-    <!-- TODO: add hero section markup here -->
+    <!-- HERO (split layout: copy left, pizza right) -->
+    <section class="hero hero--yellow hero-split section" aria-labelledby="hero-heading">
+      <div class="bg" aria-hidden="true"></div>
 
-    <!-- HIGHLIGHTS / SPECIALS -->
-    <!-- TODO: add highlights cards here -->
+      <div class="container hero-inner">
+        <!-- Left: copy + CTAs -->
+        <div class="copy">
+          <p class="eyebrow muted">Pickup only • Shakespeare, ON</p>
+          <h1 id="hero-heading">Local pies. Cup &amp; Char pepperoni.</h1>
+          <p class="lead">Fresh dough, premium toppings, and fast pickup.</p>
 
-    <!-- MENU PREVIEW (anchors to /order) -->
-    <!-- TODO: add menu preview grid here -->
+          <div class="cta-row" role="group" aria-label="Primary actions">
+            <a class="btn btn-primary" href="order/#builder">Order Pickup</a>
+            <a class="btn btn-quiet" href="tel:2266488888" aria-label="Call 226-648-8888">226-648-8888</a>
+            <a class="btn btn-quiet" href="order/#pay" aria-label="Pay online using Clover">Pay Online</a>
+          </div>
+        </div>
 
-    <!-- TESTIMONIALS (All | Google Reviews toggle) -->
-    <!-- TODO: add testimonials tabs/area here -->
+        <!-- Right: pizza image -->
+        <div class="media" aria-hidden="true">
+          <img
+            class="pizza-img spin"
+            src="assets/img/pizza-hero.png"
+            width="900" height="900"
+            alt=""
+            decoding="async" />
+        </div>
+      </div>
+    </section>
+
+
+    <!-- MENU (from in-store menu) -->
+    <section id="menu" class="section menu-section" aria-labelledby="menu-heading">
+      <div class="container">
+        <h2 id="menu-heading" class="center">Menu &amp; Prices</h2>
+
+        <!-- Price tables -->
+        <div class="price-tables">
+          <!-- SINGLE MENU -->
+          <article class="price-card" aria-labelledby="single-menu-heading">
+            <h3 id="single-menu-heading">Single Menu</h3>
+            <p class="muted">6, 8, 10, or 12 slices</p>
+            <div class="table-wrap">
+              <table>
+                <caption class="visually-hidden">Single pizza prices by size</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Small<br><span class="muted">6 slices</span></th>
+                    <th scope="col">Medium<br><span class="muted">8 slices</span></th>
+                    <th scope="col">Large<br><span class="muted">10 slices</span></th>
+                    <th scope="col">X-Large<br><span class="muted">12 slices</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Basic cheese &amp; sauce</th>
+                    <td>$7.00</td><td>$9.75</td><td>$11.50</td><td>$14.25</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Extra toppings <span class="muted">(each)</span></th>
+                    <td>$0.75</td><td>$1.00</td><td>$1.25</td><td>$1.50</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Example 6-item pizza</th>
+                    <td>$11.50</td><td>$15.75</td><td>$19.00</td><td>$23.25</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <!-- DOUBLE MENU -->
+          <article class="price-card" aria-labelledby="double-menu-heading">
+            <h3 id="double-menu-heading">Double Menu</h3>
+            <p class="muted">Two pizzas • 12–24 slices</p>
+            <div class="table-wrap">
+              <table>
+                <caption class="visually-hidden">Two-pizza prices by size</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">2 Small<br><span class="muted">12 slices</span></th>
+                    <th scope="col">2 Medium<br><span class="muted">16 slices</span></th>
+                    <th scope="col">2 Large<br><span class="muted">20 slices</span></th>
+                    <th scope="col">2 X-Large<br><span class="muted">24 slices</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Basic cheese &amp; sauce</th>
+                    <td>$13.00</td><td>$16.50</td><td>$20.50</td><td>$23.50</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Extra toppings for both <span class="muted">(each)</span></th>
+                    <td>$1.50</td><td>$2.00</td><td>$2.50</td><td>$3.50</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Example 6-item pizza</th>
+                    <td>$20.00</td><td>$28.50</td><td>$35.50</td><td>$44.50</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <!-- HOUSE SPECIALS -->
+        <article class="price-card specials" aria-labelledby="specials-heading">
+          <h3 id="specials-heading">House Specials (Large)</h3>
+          <ul class="specials-list" role="list">
+            <li>
+              <div class="name">House Deluxe</div>
+              <div class="desc muted">Pepperoni, mushrooms, green peppers, onions, tomatoes &amp; bacon</div>
+              <div class="price">$17.99</div>
+            </li>
+            <li>
+              <div class="name">BBQ Chicken Club</div>
+              <div class="desc muted">BBQ sauce, grilled chicken, red onions &amp; tomatoes</div>
+              <div class="price">$15.99</div>
+            </li>
+            <li>
+              <div class="name">Greek</div>
+              <div class="desc muted">Tomatoes, onions, black olives &amp; feta</div>
+              <div class="price">$15.99</div>
+            </li>
+            <li>
+              <div class="name">Cheeseburger</div>
+              <div class="desc muted">Bacon, ground beef &amp; cheddar</div>
+              <div class="price">$14.99</div>
+            </li>
+            <li>
+              <div class="name">Mexican</div>
+              <div class="desc muted">Jalapeños, ground beef, onions, corn</div>
+              <div class="price">$15.99</div>
+            </li>
+            <li>
+              <div class="name">Bruschetta</div>
+              <div class="desc muted">Garlic spread, tomatoes, green peppers, feta, chopped garlic &amp; oregano</div>
+              <div class="price">$14.99</div>
+            </li>
+          </ul>
+          <p class="note muted">Upgrade any Large Special to X-Large for just <strong>$2.00</strong> extra.</p>
+          <div class="center" style="margin-top:.5rem;">
+            <a class="btn btn-primary" href="order/#pizza">Build a Pizza</a>
+            <a class="btn btn-quiet" href="order/#builder">See Full Menu</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="section testimonials" aria-labelledby="testimonials-heading">
+      <div class="container">
+        <h2 id="testimonials-heading" class="center">What people are saying</h2>
+
+        <div class="testi-grid">
+          <!-- Left column: All Reviews (curated quotes) -->
+          <div class="col curated" aria-labelledby="all-reviews-heading">
+            <h3 id="all-reviews-heading">All Reviews</h3>
+
+            <blockquote class="quote">
+              <div class="rating" role="img" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>“Best Cup &amp; Char pie around—crispy edges, perfect sauce.”</p>
+              <cite>— A. Collins</cite>
+            </blockquote>
+
+            <blockquote class="quote">
+              <div class="rating" role="img" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>“Fast pickup and super friendly staff. Calzones are killer.”</p>
+              <cite>— J. Singh</cite>
+            </blockquote>
+
+            <blockquote class="quote">
+              <div class="rating" role="img" aria-label="4.5 out of 5 stars">★★★★☆</div>
+              <p>“Great value. Sub + slice combo hits the spot every time.”</p>
+              <cite>— M. Bennett</cite>
+            </blockquote>
+
+            <!-- Added reviews -->
+            <blockquote class="quote">
+              <div class="rating" role="img" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>“The dough is legit—light, chewy, and perfectly charred.”</p>
+              <cite>— L. Nguyen</cite>
+            </blockquote>
+
+            <blockquote class="quote">
+              <div class="rating" role="img" aria-label="5 out of 5 stars">★★★★★</div>
+              <p>“Worth the drive. Best pizza in Perth County.”</p>
+              <cite>— R. Patel</cite>
+            </blockquote>
+          </div>
+
+          <!-- Right column: Google Reviews (shown by default) -->
+          <div class="col google" aria-labelledby="google-reviews-heading">
+            <div class="google-head">
+              <h3 id="google-reviews-heading">Google Reviews</h3>
+              <a class="btn btn-quiet" data-google-link href="#" target="_blank" rel="noopener">Open on Google</a>
+            </div>
+
+            <ul id="google-list" class="google-list" role="list">
+              <li class="g-review">
+                <div class="rating" role="img" aria-label="5 out of 5 stars">★★★★★</div>
+                <p>“Deluxe pizza was loaded and still crispy. Will be back!”</p>
+                <span class="who muted">K*** M. • Local Guide</span>
+              </li>
+              <li class="g-review">
+                <div class="rating" role="img" aria-label="5 out of 5 stars">★★★★★</div>
+                <p>“Quick service. Love the sauce and generous toppings.”</p>
+                <span class="who muted">S*** R.</span>
+              </li>
+              <li class="g-review">
+                <div class="rating" role="img" aria-label="4 out of 5 stars">★★★★☆</div>
+                <p>“Great value for takeout—subs were fresh and toasty.”</p>
+                <span class="who muted">D*** P.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
 
     <!-- ABOUT -->
-    <!-- TODO: add about section (image + copy) here -->
+    <section id="about" class="section about" aria-labelledby="about-heading">
+      <div class="container about-grid reveal">
+        <!-- Photo -->
+        <figure class="about-photo" aria-labelledby="about-caption">
+          <img
+            src="assets/img/storefront.jpg"
+            alt="Shakespeare Pizza storefront on Line 34 in Shakespeare, Ontario"
+            width="1200" height="900" loading="lazy" decoding="async" />
+          <figcaption id="about-caption" class="visually-hidden">
+            Front entrance of Shakespeare Pizza
+          </figcaption>
+        </figure>
 
-    <!-- HOURS & CONTACT (with Open Now badge) -->
-    <!-- TODO: add hours table and contact buttons here -->
+        <!-- Copy -->
+        <div class="about-copy">
+          <p class="eyebrow muted">Since 2017 • Family-run</p>
+          <h2 id="about-heading">About Shakespeare Pizza</h2>
+          <p class="lead">Local, hand-tossed pies with Cup &amp; Char pepperoni, calzones, wings, subs, and salads—made fast for pickup.</p>
+
+          <h3>What we make</h3>
+          <p>From classic cheese to loaded specialties, each pizza is built on fresh dough, our house sauce, and quality toppings. Calzones are baked golden and perfect for dipping.</p>
+
+          <h3>Why locals choose us</h3>
+          <ul class="about-list">
+            <li>Hand-tossed dough and premium ingredients</li>
+            <li>Reliable pickup times and friendly service</li>
+            <li>Great value combos and generous toppings</li>
+          </ul>
+
+          <ul class="chips">
+            <li>Pickup only</li>
+            <li>Cup &amp; Char</li>
+            <li>Subs &amp; Calzones</li>
+          </ul>
+
+          <div class="cta-row" role="group" aria-label="About actions">
+            <a class="btn btn-primary" href="#map">Find us</a>
+            <a class="btn btn-quiet" href="tel:2266488888">Call 226-648-8888</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- HOURS & CONTACT -->
+    <section id="hours" class="section hours-contact" aria-labelledby="hours-heading">
+      <div class="container">
+        <header class="hours-head">
+          <h2 id="hours-heading">Hours &amp; Contact</h2>
+          <span id="open-badge" class="open-badge hide" aria-live="polite">Open now</span>
+        </header>
+
+        <div class="hours-grid">
+          <!-- Hours table -->
+          <div class="hours-card" aria-labelledby="weekly-hours-heading">
+            <h3 id="weekly-hours-heading" class="visually-hidden">Weekly hours</h3>
+            <div class="table-wrap">
+              <table class="hours-table" aria-describedby="hours-note">
+                <thead>
+                  <tr>
+                    <th scope="col">Day</th>
+                    <th scope="col">Open</th>
+                  </tr>
+                </thead>
+                <tbody id="hours-table">
+                  <!-- Filled by JS from data/hours.json -->
+                </tbody>
+              </table>
+            </div>
+            <p id="hours-note" class="muted micro">Hours may vary on holidays.</p>
+          </div>
+
+          <!-- Contact form -->
+          <div class="contact-card" aria-labelledby="contact-heading-2">
+            <h3 id="contact-heading-2">Send a message</h3>
+            <p class="muted">Questions only — please call for orders.</p>
+
+            <!-- Netlify Forms ready; works with our JS for in-place success message -->
+            <form id="contact-form" name="contact" class="contact-form"
+                  method="POST" data-netlify="true" netlify-honeypot="bot-field">
+              <input type="hidden" name="form-name" value="contact" />
+              <p class="visually-hidden">
+                <label>Don’t fill this out if you’re human <input name="bot-field" /></label>
+              </p>
+
+              <div class="field">
+                <label for="cf-name">Name<span aria-hidden="true">*</span></label>
+                <input id="cf-name" name="name" type="text" required autocomplete="name" />
+              </div>
+
+              <div class="field">
+                <label for="cf-email">Email<span aria-hidden="true">*</span></label>
+                <input id="cf-email" name="email" type="email" required autocomplete="email" inputmode="email" />
+              </div>
+
+              <div class="field">
+                <label for="cf-phone">Phone</label>
+                <input id="cf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+                <small class="muted">Optional</small>
+              </div>
+
+              <div class="field">
+                <label for="cf-message">Message<span aria-hidden="true">*</span></label>
+                <textarea id="cf-message" name="message" rows="6" required maxlength="1000"></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Send Message</button>
+                <a class="btn btn-quiet" href="tel:2266488888">Call Instead</a>
+              </div>
+
+              <p id="cf-status" class="status hide" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
 
     <!-- MAP / DIRECTIONS -->
-    <!-- TODO: add map embed + directions link here -->
+    <section id="map" class="section map-section" aria-labelledby="map-heading">
+      <div class="container">
+        <header class="map-head">
+          <h2 id="map-heading">Map &amp; Directions</h2>
+          <a class="btn btn-quiet" data-google-link href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+        </header>
+
+        <div class="map-wrap">
+          <!-- Overlay skeleton + manual loader for privacy/perf -->
+          <div class="map-overlay" aria-hidden="true"></div>
+          <button id="load-map" class="btn btn-primary map-loader" type="button">
+            Load interactive map
+          </button>
+
+          <!-- Iframe gets its src from config.json via JS and lazy loads -->
+          <iframe
+            id="gmap"
+            title="Map to Shakespeare Pizza"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            aria-label="Google Map showing Shakespeare Pizza location">
+          </iframe>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- Footer -->
