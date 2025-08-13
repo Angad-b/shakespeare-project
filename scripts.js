@@ -62,18 +62,20 @@ function isOpenNow(hours, tz = "America/Toronto") {
 
 // Example attach function we’ll call once the Hours section exists
 async function updateOpenBadge() {
-  const badge = $("#open-badge"); // <span id="open-badge"></span> later
-  if (!badge) return;
+  const ids = ["open-badge", "open-badge-footer"];
   try {
     const hours = await loadJSON("data/hours.json");
     const open = isOpenNow(hours, hours.timezone || "America/Toronto");
-    badge.textContent = open ? "Open now" : "Closed";
-    badge.classList.toggle("hide", false);
-    badge.setAttribute("aria-live", "polite");
-  } catch (e) {
-    console.error(e);
-  }
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = open ? "Open now" : "Closed";
+      el.classList.remove("hide");
+      el.setAttribute("aria-live","polite");
+    });
+  } catch (e) { console.error(e); }
 }
+
 // Call later when Hours UI is added
 // updateOpenBadge();
 
@@ -119,6 +121,10 @@ async function renderHours() {
     // Current day index in supplied timezone
     const now = new Date(new Date().toLocaleString("en-CA", { timeZone: hours.timezone || "America/Toronto" }));
     const todayKey = ["sun","mon","tue","wed","thu","fri","sat"][now.getDay()];
+    // ... inside renderHours(), after todayKey is set
+    const todayRanges = (hours[todayKey] || []).join(", ") || "Closed";
+    const todayEl = document.getElementById("today-hours");
+    if (todayEl) todayEl.textContent = todayRanges;
 
     tbody.innerHTML = order.map(key => {
       const ranges = (hours[key] || []).join(", ");
