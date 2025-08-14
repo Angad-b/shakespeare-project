@@ -454,9 +454,6 @@ h2 { font-size: clamp(1.5rem, 2.2vw + 1rem, 2.2rem); margin: 0 0 1.25rem; }
 .map-loaded .map-loader { display: none; }
 
 /* ---------- Popular Picks (HTML+CSS only) ---------- */
-.popular {
-  background: #251212;
-}
 .pp-section { padding: 3.5rem 0; background: #251212;}
 .pp-container { width: min(1100px, 92vw); margin: 0 auto; }
 .pp-head { text-align: center; margin-bottom: 1.25rem; }
