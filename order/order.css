@@ -149,3 +149,20 @@
 .link.danger { color:#ff6b6b; }
 
 .confirm #confirm-details { margin: .25rem 0 1rem; }
+
+/* --- O6 additions: item grids + add rows --- */
+.item-grid {
+  display: grid; gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+}
+@media (max-width: 900px){ .item-grid { grid-template-columns: 1fr; } }
+
+.special h3 { margin: 0 0 .25rem; }
+.add-row {
+  display: grid; gap: .5rem; align-items: center;
+  grid-template-columns: 1fr auto auto auto;
+}
+.add-row .qty input {
+  width: 72px; background:#1a1b1f; color:var(--text);
+  border:1px solid var(--glass-border); border-radius:10px; padding:.5rem .6rem;
+}
