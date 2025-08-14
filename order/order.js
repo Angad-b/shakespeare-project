@@ -1,6 +1,5 @@
-/* Shakespeare Pizza — Order Builder (O6)
-   O3–O5 features + Double Deal, Specials, Subs, Wings, Nuggets, Salads, Sides, Drinks
-   Pricing driven by /data/menu.json
+/* Shakespeare Pizza — Order Builder (O7)
+   O3–O6 features + Clover Payment Links UI on Review & Confirm
 */
 (() => {
   const CART_KEY = "sp_cart_v1";
@@ -16,13 +15,16 @@
   const encode = (data) =>
     Object.keys(data).map(k => encodeURIComponent(k) + "=" + encodeURIComponent(data[k])).join("&");
 
+  const hasCloverLinks = () =>
+    Array.isArray(CFG?.clover?.paymentLinks) &&
+    CFG.clover.paymentLinks.filter(l => l && l.url).length > 0;
+
   // cart state
   const state = { items: [], tip: 0, tipPct: null, taxRate: 0.13 };
 
   const saveState = () => sessionStorage.setItem(CART_KEY, JSON.stringify(state));
   const loadState = () => { try { const raw = sessionStorage.getItem(CART_KEY); if (raw) Object.assign(state, JSON.parse(raw)); } catch {} };
 
-  // keep tabs visually "active"
   function setActiveTabFromHash() {
     const hash = location.hash || "#single";
     $$(".tabs .tab").forEach(a => a.setAttribute("aria-current", a.getAttribute("href") === hash ? "true":"false"));
@@ -32,7 +34,7 @@
 
   // ----- pricing helpers -----
   function calcSinglePrice(sizeId, crustId, toppingIds) {
-    const size   = MENU.pizza.sizes.find(s => s.id === sizeId) || MENU.pizza.sizes[2]; // default Large
+    const size   = MENU.pizza.sizes.find(s => s.id === sizeId) || MENU.pizza.sizes[2];
     const base   = size.base;
     const extra  = MENU.pizza.extraToppingBySize[sizeId];
     const weight = (toppingIds || []).reduce((sum, id) => {
@@ -43,7 +45,6 @@
     const up     = crust ? (crust.upcharge || 0) : 0;
     return +(base + weight * extra + up).toFixed(2);
   }
-
   function calcDoublePrice(sizeId, toppingIds) {
     const base  = MENU.pizza.doubleDeal.twoCheeseBySize[sizeId];
     const extra = MENU.pizza.doubleDeal.extraToppingBothBySize[sizeId];
@@ -51,33 +52,24 @@
       const t = MENU.pizza.toppings.find(x => x.id === id);
       return sum + (t ? (t.weight || 1) : 1);
     }, 0);
-    return +(base + weight * extra).toFixed(2); // toppings apply to BOTH pizzas
+    return +(base + weight * extra).toFixed(2);
   }
 
-  // ----- render SINGLE -----
+  // ----- renderers (Single / Double / Specials / Subs / Wings / Nuggets / Salads / Sides / Drinks) -----
   function renderSingleBuilder() {
     const panel = $("#single"); if (!panel) return;
 
     const sizeOpts = MENU.pizza.sizes.map(s =>
-      `<label class="chip-radio">
-         <input type="radio" name="single-size" value="${s.id}" ${s.id === "l" ? "checked" : ""}>
-         <span>${s.label} <b>${money(s.base)}</b></span>
-       </label>`
+      `<label class="chip-radio"><input type="radio" name="single-size" value="${s.id}" ${s.id === "l" ? "checked" : ""}><span>${s.label} <b>${money(s.base)}</b></span></label>`
     ).join("");
 
     const crustOpts = MENU.pizza.crusts.map(c => {
       const up = c.upcharge ? ` (+${money(c.upcharge)})` : "";
-      return `<label class="chip-radio">
-        <input type="radio" name="single-crust" value="${c.id}" ${c.id === "white" ? "checked" : ""}>
-        <span>${c.label}${up}</span>
-      </label>`;
+      return `<label class="chip-radio"><input type="radio" name="single-crust" value="${c.id}" ${c.id === "white" ? "checked" : ""}><span>${c.label}${up}</span></label>`;
     }).join("");
 
     const toppings = MENU.pizza.toppings.map(t =>
-      `<label class="chk">
-         <input type="checkbox" name="single-topping" value="${t.id}">
-         <span>${t.label}${t.weight === 2 ? ' <em class="x2">×2</em>' : ""}</span>
-       </label>`
+      `<label class="chk"><input type="checkbox" name="single-topping" value="${t.id}"><span>${t.label}${t.weight === 2 ? ' <em class="x2">×2</em>' : ""}</span></label>`
     ).join("");
 
     const free = (MENU.pizza.freeExtras || []).map(f =>
@@ -97,7 +89,6 @@
           <button type="button" id="single-add" class="btn btn-primary">Add to cart</button>
         </div>
       </form>`;
-
     (panel.querySelector(".placeholder") || {}).outerHTML = html;
 
     const form    = $("#single-form");
@@ -136,22 +127,17 @@
     });
   }
 
-  // ----- render DOUBLE DEAL (toppings apply to both pizzas) -----
   function renderDoubleBuilder() {
     const panel = $("#double"); if (!panel) return;
     const sizes = Object.keys(MENU.pizza.doubleDeal.twoCheeseBySize);
     const sizeLabels = MENU.pizza.sizes.reduce((acc,s)=> (acc[s.id]=s.label, acc), {});
     const sizeOpts = sizes.map(id => {
       const base = MENU.pizza.doubleDeal.twoCheeseBySize[id];
-      return `<label class="chip-radio">
-        <input type="radio" name="double-size" value="${id}" ${id==="l"?"checked":""}>
-        <span>${sizeLabels[id] || id} <b>${money(base)}</b></span>
-      </label>`;
+      return `<label class="chip-radio"><input type="radio" name="double-size" value="${id}" ${id==="l"?"checked":""}><span>${sizeLabels[id] || id} <b>${money(base)}</b></span></label>`;
     }).join("");
 
     const toppings = MENU.pizza.toppings.map(t =>
-      `<label class="chk"><input type="checkbox" name="double-topping" value="${t.id}">
-        <span>${t.label}${t.weight===2?' <em class="x2">×2</em>':""}</span></label>`
+      `<label class="chk"><input type="checkbox" name="double-topping" value="${t.id}"><span>${t.label}${t.weight===2?' <em class="x2">×2</em>':""}</span></label>`
     ).join("");
 
     const html = `
@@ -198,7 +184,6 @@
     });
   }
 
-  // ----- render SPECIALS (Large default, upgrade to XL +$2) -----
   function renderSpecials() {
     const panel = $("#specials"); if (!panel) return;
     const cards = MENU.pizza.specialsLarge.map(sp => `
@@ -213,7 +198,6 @@
         </div>
       </article>
     `).join("");
-
     (panel.querySelector(".placeholder") || {}).outerHTML = `<div class="item-grid">${cards}</div>`;
 
     $$('[data-add-special]').forEach(btn => {
@@ -234,15 +218,12 @@
     });
   }
 
-  // ----- render SUBS -----
   function renderSubs() {
     const panel = $("#subs"); if (!panel) return;
     const baseSubs = MENU.subs.filter(s => !s.addon);
     const opts = baseSubs.map(s =>
-      `<label class="chip-radio">
-        <input type="radio" name="sub-type" value="${s.id}" ${s.id===baseSubs[0].id?"checked":""}>
-        <span>${s.label} <b>${money(s.price)}</b></span>
-      </label>`).join("");
+      `<label class="chip-radio"><input type="radio" name="sub-type" value="${s.id}" ${s.id===baseSubs[0].id?"checked":""}><span>${s.label} <b>${money(s.price)}</b></span></label>`
+    ).join("");
 
     const html = `
       <form id="subs-form" class="builder">
@@ -271,24 +252,16 @@
       const toasted = $("#sub-toasted").checked;
       const unit = +(def.price + (addMeat?1:0) + (addChe?1:0)).toFixed(2);
       const notes = `${toasted?"Toasted":"Not toasted"}${addMeat?" • +Extra Meat":""}${addChe?" • +Extra Cheese":""}`;
-      state.items.push({
-        type: "sub", name: def.label, qty,
-        toasted, addMeat, addChe,
-        unitPrice: unit, lineTotal: +(unit * qty).toFixed(2),
-        details: notes
-      });
+      state.items.push({ type: "sub", name: def.label, qty, toasted, addMeat, addChe, unitPrice: unit, lineTotal: +(unit * qty).toFixed(2), details: notes });
       saveState(); renderCart(); flashAdded();
     });
   }
 
-  // ----- render WINGS -----
   function renderWings() {
     const panel = $("#wings"); if (!panel) return;
     const sizeOpts = MENU.wings.sizes.map(s =>
-      `<label class="chip-radio">
-        <input type="radio" name="wings-size" value="${s.id}" ${s.id===MENU.wings.sizes[0].id?"checked":""}>
-        <span>${s.label} <b>${money(s.price)}</b></span>
-      </label>`).join("");
+      `<label class="chip-radio"><input type="radio" name="wings-size" value="${s.id}" ${s.id===MENU.wings.sizes[0].id?"checked":""}><span>${s.label} <b>${money(s.price)}</b></span></label>`
+    ).join("");
 
     const flavourOpts = MENU.wings.flavours.map(f => `<option value="${f}">${f}</option>`).join("");
 
@@ -314,23 +287,16 @@
       const dips   = Math.max(0, parseInt($("#wings-dips").value || "0", 10));
       const qty    = Math.max(1, parseInt($("#wings-qty").value || "1", 10));
       const unit   = +(size.price + dips * MENU.wings.dippingSauce).toFixed(2);
-      state.items.push({
-        type:"wings", name:`Wings — ${size.label} • ${flavour}`,
-        flavour, size:sizeId, dips, qty,
-        unitPrice: unit, lineTotal: +(unit * qty).toFixed(2)
-      });
+      state.items.push({ type:"wings", name:`Wings — ${size.label} • ${flavour}`, flavour, size:sizeId, dips, qty, unitPrice: unit, lineTotal: +(unit * qty).toFixed(2) });
       saveState(); renderCart(); flashAdded();
     });
   }
 
-  // ----- render NUGGETS -----
   function renderNuggets() {
     const panel = $("#nuggets"); if (!panel) return;
     const sizeOpts = MENU.nuggets.sizes.map(s =>
-      `<label class="chip-radio">
-        <input type="radio" name="nuggets-size" value="${s.id}" ${s.id===MENU.nuggets.sizes[0].id?"checked":""}>
-        <span>${s.label} <b>${money(s.price)}</b></span>
-      </label>`).join("");
+      `<label class="chip-radio"><input type="radio" name="nuggets-size" value="${s.id}" ${s.id===MENU.nuggets.sizes[0].id?"checked":""}><span>${s.label} <b>${money(s.price)}</b></span></label>`
+    ).join("");
 
     const html = `
       <form id="nuggets-form" class="builder">
@@ -348,23 +314,17 @@
       const size   = MENU.nuggets.sizes.find(s=>s.id===sizeId);
       const qty    = Math.max(1, parseInt($("#nuggets-qty").value || "1", 10));
       const unit   = size.price;
-      state.items.push({
-        type:"nuggets", name:`Nuggets — ${size.label}`,
-        size:sizeId, qty, unitPrice: unit, lineTotal: +(unit * qty).toFixed(2)
-      });
+      state.items.push({ type:"nuggets", name:`Nuggets — ${size.label}`, size:sizeId, qty, unitPrice: unit, lineTotal: +(unit * qty).toFixed(2) });
       saveState(); renderCart(); flashAdded();
     });
   }
 
-  // ----- render SALADS -----
   function renderSalads() {
     const panel = $("#salads"); if (!panel) return;
     const base = MENU.salads.filter(s=>!s.addon);
     const opts = base.map(s =>
-      `<label class="chip-radio">
-        <input type="radio" name="salad-type" value="${s.id}" ${s.id===base[0].id?"checked":""}>
-        <span>${s.label} <b>${money(s.price)}</b></span>
-      </label>`).join("");
+      `<label class="chip-radio"><input type="radio" name="salad-type" value="${s.id}" ${s.id===base[0].id?"checked":""}><span>${s.label} <b>${money(s.price)}</b></span></label>`
+    ).join("");
 
     const addChicken = MENU.salads.find(s=>s.addon && s.id==="add_chicken");
 
@@ -389,23 +349,18 @@
       const add = $("#salad-addch").checked;
       const up  = add ? (MENU.salads.find(s=>s.id==="add_chicken")?.price || 0) : 0;
       const unit = +(def.price + up).toFixed(2);
-      state.items.push({
-        type:"salad", name: def.label + (add?" (+Chicken)":""),
-        qty, unitPrice: unit, lineTotal: +(unit * qty).toFixed(2)
-      });
+      state.items.push({ type:"salad", name: def.label + (add?" (+Chicken)":""),
+        qty, unitPrice: unit, lineTotal: +(unit * qty).toFixed(2) });
       saveState(); renderCart(); flashAdded();
     });
   }
 
-  // ----- render SIDES -----
   function renderSides() {
     const panel = $("#sides"); if (!panel) return;
     const base = MENU.sides;
     const opts = base.map(s =>
-      `<label class="chip-radio">
-        <input type="radio" name="side-type" value="${s.id}" ${s.id===base[0].id?"checked":""}>
-        <span>${s.label} <b>${money(s.price)}</b></span>
-      </label>`).join("");
+      `<label class="chip-radio"><input type="radio" name="side-type" value="${s.id}" ${s.id===base[0].id?"checked":""}><span>${s.label} <b>${money(s.price)}</b></span></label>`
+    ).join("");
 
     const html = `
       <form id="sides-form" class="builder">
@@ -428,18 +383,15 @@
     });
   }
 
-  // ----- render DRINKS -----
   function renderDrinks() {
     const panel = $("#drinks"); if (!panel) return;
     const def = MENU.drinks[0];
     const html = `
-      <div class="card">
-        <div class="add-row">
-          <div><strong>Soft Drink</strong> <span class="muted">(${money(def.price)} each)</span></div>
-          <label class="qty"><span>Qty</span><input type="number" id="drinks-qty" min="1" value="1" inputmode="numeric"></label>
-          <button type="button" id="drinks-add" class="btn btn-primary">Add</button>
-        </div>
-      </div>`;
+      <div class="card"><div class="add-row">
+        <div><strong>Soft Drink</strong> <span class="muted">(${money(def.price)} each)</span></div>
+        <label class="qty"><span>Qty</span><input type="number" id="drinks-qty" min="1" value="1" inputmode="numeric"></label>
+        <button type="button" id="drinks-add" class="btn btn-primary">Add</button>
+      </div></div>`;
     (panel.querySelector(".placeholder") || {}).outerHTML = html;
 
     $("#drinks-add").addEventListener("click", () => {
@@ -450,10 +402,9 @@
     });
   }
 
-  // ----- cart UI & totals (unchanged except for flash) -----
+  // ----- cart UI & totals -----
   function renderCart() {
-    const ul = $("#cart-list");
-    if (!ul) return;
+    const ul = $("#cart-list"); if (!ul) return;
 
     if (!state.items.length) {
       ul.innerHTML = `<li class="muted empty">Your cart is empty. <a href="#single">Start with a Single Pizza</a>.</li>`;
@@ -498,7 +449,6 @@
       }).join("");
     }
 
-    // qty handlers
     $$("#cart-list .qty-inc").forEach(btn => btn.addEventListener("click", (e) => {
       const idx = +e.currentTarget.dataset.idx;
       const it = state.items[idx]; it.qty += 1; it.lineTotal = +(it.unitPrice * it.qty).toFixed(2);
@@ -510,8 +460,6 @@
       if (it.qty <= 0) state.items.splice(idx,1); else it.lineTotal = +(it.unitPrice * it.qty).toFixed(2);
       saveState(); renderCart();
     }));
-
-    // remove handlers
     $$("#cart-list [data-remove]").forEach(btn => btn.addEventListener("click", (e) => {
       const idx = +e.currentTarget.getAttribute("data-remove");
       state.items.splice(idx, 1); saveState(); renderCart();
@@ -541,7 +489,7 @@
     $("#t-total").textContent = money(tot);
   }
 
-  // ----- Review -> submit (same as O5) -----
+  // ----- Kitchen ticket + submit -----
   function generateOrderId() {
     const now = new Date(); const pad = (n)=>n.toString().padStart(2,"0");
     const YY = now.getFullYear().toString().slice(-2), MM=pad(now.getMonth()+1), DD=pad(now.getDate());
@@ -579,9 +527,7 @@
         lines.push(`${it.qty}× Wings — ${MENU.wings.sizes.find(s=>s.id===it.size)?.label} • ${it.flavour}${it.dips?`\n   Dips: ${it.dips}`:""}`);
       } else if (it.type === "nuggets") {
         lines.push(`${it.qty}× Nuggets — ${MENU.nuggets.sizes.find(s=>s.id===it.size)?.label}`);
-      } else if (it.type === "salad") {
-        lines.push(`${it.qty}× ${it.name}`);
-      } else if (it.type === "side" || it.type === "drink") {
+      } else if (it.type === "salad" || it.type === "side" || it.type === "drink") {
         lines.push(`${it.qty}× ${it.name}`);
       } else {
         lines.push(`${it.qty}× ${it.name}`);
@@ -607,8 +553,7 @@
     const digits = phone.replace(/\D/g,""); if (digits.length < 7) { status.textContent = "Please enter a valid phone number."; status.classList.add("err"); status.classList.remove("hide"); return; }
 
     let payment = (document.querySelector('input[name="payment"]:checked')?.value) || "pay_at_pickup";
-    const hasCloverLinks = Array.isArray(CFG?.clover?.paymentLinks) && CFG.clover.paymentLinks.some(l => l && l.url);
-    if (payment === "online" && !hasCloverLinks) {
+    if (payment === "online" && !hasCloverLinks()) {
       payment = "pay_at_pickup";
       status.textContent = "Online payment isn’t available right now — set to Pay at Pickup.";
       status.classList.remove("err","hide"); setTimeout(() => status.classList.add("hide"), 1500);
@@ -626,22 +571,52 @@
 
     const ticket = kitchenTicket(payload);
 
-    // fill hidden form
     const nf = $("#netlify-order"); if (!nf) { status.textContent = "Form missing. Please call to place order."; status.classList.add("err"); status.classList.remove("hide"); return; }
     $("#f-order-id").value = id; $("#f-payment").value = payment; $("#f-name").value = name; $("#f-phone").value = phone; $("#f-pickup").value = pickup; $("#f-kitchen").value = ticket; $("#f-json").value = JSON.stringify(payload, null, 2);
 
-    // send
     status.textContent = "Sending…"; status.classList.remove("err","hide");
     try {
       const fd = new FormData(nf); const body = {}; fd.forEach((v,k)=> body[k]=v);
       await fetch("/", { method:"POST", headers:{ "Content-Type":"application/x-www-form-urlencoded" }, body: encode(body) });
 
-      state.items = []; saveState(); renderCart();
+      // success
+      // success -> save a lightweight summary for the thanks page
+        const summary = {
+        id,
+        payment,
+        pickup,
+        createdAt: new Date().toISOString(),
+        currency: (MENU && MENU.currency) || "CAD",
+        phone: CFG.phone || "226-648-8888",
+        totals: currentTotals(),   // { sub, tax, tip, tot }
+        items: state.items         // keep a copy for the ticket
+        };
+        sessionStorage.setItem("sp_last_order", JSON.stringify(summary));
+
+        // clear cart
+        state.items = [];
+        saveState();
+        renderCart();
+
+        // redirect to dedicated Thank You page
+        const payParam = (payment === "online" ? "&pay=1" : "");
+        location.href = "./thanks.html?oid=" + encodeURIComponent(id) + payParam;
+
       const details = $("#confirm-details");
       if (details) {
         const when = pickup === "ASAP" ? "ASAP" : `in ~${pickup} min`;
         details.textContent = `Order ${id}. Pickup: ${when}. If anything changes, call ${CFG.phone || "226-648-8888"}.`;
       }
+
+      // If online payment chosen and we have links, surface them on the Confirm screen too
+      if (payment === "online" && hasCloverLinks()) {
+        $("#confirm-note")?.classList.remove("hide");
+        renderCloverButtons("confirm-pay");
+      } else {
+        $("#confirm-note")?.classList.add("hide");
+        $("#confirm-pay")?.classList.add("hide");
+      }
+
       location.hash = "#confirm";
       status.textContent = "Order sent!"; setTimeout(()=>status.classList.add("hide"), 1200);
     } catch (e) {
@@ -651,7 +626,23 @@
     }
   }
 
-  // ----- tips + totals -----
+  // ----- Tips / Totals -----
+  function currentTotals() {
+    const sub = state.items.reduce((s, it) => s + (it.lineTotal || 0), 0);
+    const tip = (state.tipPct !== null) ? +(sub * state.tipPct).toFixed(2) : +(state.tip || 0);
+    const tax = +(sub * state.taxRate).toFixed(2);
+    const tot = +(sub + tax + tip).toFixed(2);
+    return { sub, tax, tip, tot };
+  }
+
+  function recalcTotals() {
+    const { sub, tax, tip, tot } = currentTotals();
+    $("#t-sub").textContent   = money(sub);
+    $("#t-tax").textContent   = money(tax);
+    $("#t-tip").textContent   = money(tip);
+    $("#t-total").textContent = money(tot);
+  }
+
   function renderTips() {
     const wrap = $("#tip-buttons"); if (!wrap) return;
     const opts = (CFG.tipOptions && CFG.tipOptions.length) ? CFG.tipOptions : [0, 0.1, 0.15, 0.18, 0.2];
@@ -663,11 +654,35 @@
     $("#tip-clear")?.addEventListener("click", () => { state.tipPct = 0; state.tip = 0; saveState(); setActive(); recalcTotals(); });
   }
 
+  // ----- Clover UI on Review & Confirm -----
+  function renderCloverButtons(containerId) {
+    const wrap = document.getElementById(containerId);
+    if (!wrap) return;
+    const links = (CFG?.clover?.paymentLinks || []).filter(l => l && l.url);
+    if (!links.length) { wrap.classList.add("hide"); wrap.innerHTML=""; return; }
+    wrap.innerHTML = links.map((l, i) =>
+      `<a class="btn ${i===0?'btn-primary':'btn-quiet'}" href="${l.url}" target="_blank" rel="noopener">${l.label || 'Pay online'}</a>`
+    ).join("");
+    wrap.classList.remove("hide");
+  }
+
+  function setupPaymentUI() {
+    const radios = $$('input[name="payment"]');
+    const toggle = () => {
+      const online = (document.querySelector('input[name="payment"]:checked')?.value === "online");
+      const has = hasCloverLinks();
+      const cont = $("#clover-links");
+      if (cont) cont.classList.toggle("hide", !(online && has));
+      if (online && has) renderCloverButtons("clover-links");
+    };
+    radios.forEach(r => r.addEventListener("change", toggle));
+    toggle();
+  }
+
   // ----- init -----
   async function init() {
     setActiveTabFromHash();
 
-    // load config + menu
     try { CFG = await loadJSON("../data/config.json"); } catch {}
     try { MENU = await loadJSON("../data/menu.json"); } catch { MENU = await loadJSON("data/menu.json"); }
 
@@ -694,7 +709,7 @@
     renderTips();
     renderCart();
 
-    // Review -> Place Order
+    setupPaymentUI();                // <-- NEW
     $("#place-order")?.addEventListener("click", handlePlaceOrder);
   }
 

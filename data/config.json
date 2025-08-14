@@ -10,8 +10,8 @@
   "paymentMode": "links",    
   "clover": {
     "paymentLinks": [
-      { "label": "Large 1-Topping", "url": "" },
-      { "label": "Two Slice + Pop", "url": "" }
+      { "label": "Pay online (full amount)", "url": "" },
+      { "label": "Pay deposit $10", "url": "" }
     ],
     "merchantId": "",
     "ecomKey": ""

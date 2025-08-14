@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Order received • Shakespeare Pizza</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="./order.css" />
+</head>
+<body>
+  <main class="section confirm center" aria-labelledby="thanks-heading">
+    <div class="container">
+      <h1 id="thanks-heading">Thanks! Your web order is in.</h1>
+      <p id="t-meta" class="muted"></p>
+
+      <ul id="t-items" class="ticket" role="list"></ul>
+
+      <dl class="totals compact">
+        <div><dt>Subtotal</dt><dd id="tt-sub">$0.00</dd></div>
+        <div><dt id="tt-tax-label">HST</dt><dd id="tt-tax">$0.00</dd></div>
+        <div><dt>Tip</dt><dd id="tt-tip">$0.00</dd></div>
+        <div class="grand"><dt>Total</dt><dd id="tt-total">$0.00</dd></div>
+      </dl>
+
+      <p id="t-pay-note" class="muted hide">Complete payment below:</p>
+      <div id="t-pay" class="chips hide"></div>
+
+      <p class="actions">
+        <a class="btn btn-primary" href="../">Back to home</a>
+        <a class="btn btn-quiet" href="./">Place another order</a>
+      </p>
+
+      <p id="t-missing" class="muted hide">Can’t find your order details? Please call us.</p>
+    </div>
+  </main>
+
+  <script src="../scripts.js" defer></script>
+  <script src="./thanks.js" defer></script>
+</body>
+</html>
