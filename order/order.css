@@ -58,6 +58,9 @@
 .totals .grand { font-weight: 800; border-top: 1px solid var(--glass-border); padding-top: .4rem; }
 
 /* Review & Pay */
+.review {
+    background: #251212;
+}
 .review-grid {
   display: grid; gap: 1rem;
   grid-template-columns: 1fr 1fr;
