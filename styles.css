@@ -280,49 +280,6 @@ h2 { font-size: clamp(1.5rem, 2.2vw + 1rem, 2.2rem); margin: 0 0 1.25rem; }
   .pizza-img.spin { animation: none; }
 }
 
-/* --- Menu section: pricing tables + specials --- */
-.menu-section {
-  background: #251212;
-}
-.menu-section h3 { margin: 0 0 .25rem; }
-.price-tables {
-  display: grid; gap: 1rem;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-}
-@media (max-width: 960px){ .price-tables { grid-template-columns: 1fr; } }
-
-.price-card {
-  background: var(--surface);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 1rem;
-}
-
-/* Add gap after Double Menu before House Specials */
-.price-card.double-menu {
-  margin-bottom: 2rem;
-}
-
-.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.price-card table { width: 100%; border-collapse: collapse; font-size: .98rem; }
-.price-card th, .price-card td { padding: .6rem .5rem; border-bottom: 1px solid var(--glass-border); text-align: right; }
-.price-card thead th { text-align: right; font-weight: 700; }
-.price-card thead th:first-child,
-.price-card tbody th[scope="row"] { text-align: left; white-space: nowrap; }
-.price-card tbody tr:last-child td, .price-card tbody tr:last-child th { border-bottom: 0; }
-
-/* Specials list */
-.specials .specials-list { list-style: none; padding: 0; margin: .5rem 0 0; display: grid; gap: .6rem; }
-.specials .specials-list li {
-  display: grid; grid-template-columns: 1fr auto; gap: .25rem .75rem; align-items: baseline;
-  padding: .5rem .25rem; border-bottom: 1px dashed var(--glass-border);
-}
-.specials .specials-list li:last-child { border-bottom: 0; }
-.specials .name { font-weight: 600; }
-.specials .price { font-weight: 700; white-space: nowrap; }
-.specials .desc { grid-column: 1 / -1; }
-.specials .note { margin-top: .5rem; }
 
 /* --- Testimonials (two columns) --- */
 .testimonials h3 { margin: 0 0 .4rem; }

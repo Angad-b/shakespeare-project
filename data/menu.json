@@ -2,58 +2,105 @@
   "currency": "CAD",
   "pizza": {
     "sizes": [
-      { "id": "s", "label": "Small",  "base": 10.99 },
-      { "id": "m", "label": "Medium", "base": 14.99 },
-      { "id": "l", "label": "Large",  "base": 18.99 }
+      { "id": "s",  "label": "Small (6 slices)",   "base": 7.25 },
+      { "id": "m",  "label": "Medium (8 slices)",  "base": 10.25 },
+      { "id": "l",  "label": "Large (10 slices)",  "base": 12.00 },
+      { "id": "xl", "label": "X-Large (12 slices)","base": 15.25 }
     ],
-    "crust": [
-      { "id": "regular", "label": "Regular", "upcharge": 0 },
-      { "id": "thin",    "label": "Thin",    "upcharge": 0 }
+    "extraToppingBySize": { "s": 0.75, "m": 1.00, "l": 1.25, "xl": 1.50 },
+    "crusts": [
+      { "id": "white",   "label": "White Flour",     "upcharge": 0 },
+      { "id": "wheat",   "label": "Whole Wheat",     "upcharge": 0 },
+      { "id": "gf",      "label": "Gluten Free",     "upcharge": 0 },
+      { "id": "keto",    "label": "Keto (cheese base)", "upcharge": 0 },
+      { "id": "cauli",   "label": "Cauliflower",     "upcharge": 5.00 }
     ],
-    "cheese": [
-      { "id": "normal", "label": "Normal", "upcharge": 0 },
-      { "id": "light",  "label": "Light",  "upcharge": 0 },
-      { "id": "extra",  "label": "Extra",  "upcharge": 2.00 }
+    "freeExtras": ["Thin crust","Thick crust","Chopped Garlic","Oregano","Chili Pepper Flakes","Extra Sauce"],
+    "toppings": [
+      { "id":"pepperoni","label":"Pepperoni","weight":1 },
+      { "id":"bacon","label":"Bacon","weight":1 },
+      { "id":"bacon_strips","label":"Bacon Strips","weight":1 },
+      { "id":"ground_beef","label":"Ground Beef","weight":1 },
+      { "id":"italian_sausage","label":"Italian Sausage","weight":1 },
+      { "id":"hot_sausage","label":"Hot Sausage","weight":1 },
+      { "id":"ham","label":"Ham","weight":1 },
+      { "id":"anchovies","label":"Anchovies","weight":1 },
+      { "id":"salami","label":"Salami","weight":1 },
+      { "id":"dill_pickles","label":"Dill Pickles","weight":1 },
+      { "id":"red_peppers","label":"Red Peppers","weight":1 },
+      { "id":"hot_peppers","label":"Hot Peppers","weight":1 },
+      { "id":"red_onion","label":"Red Onion","weight":1 },
+      { "id":"onion","label":"Onion","weight":1 },
+      { "id":"tomatoes","label":"Tomatoes","weight":1 },
+      { "id":"pineapple","label":"Pineapple","weight":1 },
+      { "id":"green_olives","label":"Green Olives","weight":1 },
+      { "id":"black_olives","label":"Black Olives","weight":1 },
+      { "id":"spinach","label":"Spinach","weight":1 },
+      { "id":"sundried_tomatoes","label":"Sundried Tomatoes","weight":1 },
+      { "id":"mushrooms","label":"Mushrooms","weight":1 },
+      { "id":"green_peppers","label":"Green Peppers","weight":1 },
+      { "id":"jalapeno_peppers","label":"Jalapeño Peppers","weight":1 },
+      { "id":"corn","label":"Corn","weight":1 },
+      { "id":"feta","label":"Feta Cheese","weight":1 },
+      { "id":"cheddar","label":"Cheddar Cheese","weight":1 },
+
+      { "id":"cup_char","label":"Cup & Char™ Pepperoni","weight":2 },
+      { "id":"shredded_pepperoni","label":"Shredded Pepperoni","weight":2 },
+      { "id":"grilled_chicken","label":"Grilled Chicken","weight":2 },
+      { "id":"double_cheese","label":"Double Cheese","weight":2 }
     ],
-    "toppings": {
-      "meats": [
-        { "id": "pep", "label": "Pepperoni", "price": 1.75 },
-        { "id": "ham", "label": "Ham",       "price": 1.75 },
-        { "id": "bac", "label": "Bacon",     "price": 1.75 }
-      ],
-      "veggies": [
-        { "id": "mush", "label": "Mushrooms", "price": 1.50 },
-        { "id": "oliv", "label": "Olives",    "price": 1.50 },
-        { "id": "pepp", "label": "Peppers",   "price": 1.50 }
-      ],
-      "premium": [
-        { "id": "ccpep", "label": "Cup & Char Pepperoni", "price": 2.25 }
-      ]
+    "doubleDeal": {
+      "twoCheeseBySize": { "s": 11.50, "m": 17.00, "l": 21.50, "xl": 25.00 },
+      "extraToppingBothBySize": { "s": 1.50, "m": 2.00, "l": 2.50, "xl": 3.50 }
     },
-    "specialties": [
-      { "id": "meatlovers", "label": "Meat Lover", "size": "l", "preset": ["pep","ham","bac"] },
-      { "id": "hawaiian",   "label": "Hawaiian",   "size": "l", "preset": ["ham"] },
-      { "id": "veggie",     "label": "Veggie",     "size": "l", "preset": ["mush","pepp","oliv"] }
+    "specialsLarge": [
+      { "id":"deluxe","label":"House Deluxe","price":18.99,"items":["pepperoni","mushrooms","green_peppers","onion","tomatoes","bacon"] },
+      { "id":"bbq_club","label":"BBQ Chicken Club","price":16.99,"items":["grilled_chicken","red_onion","tomatoes"] },
+      { "id":"greek","label":"Greek","price":15.99,"items":["tomatoes","onion","black_olives","feta"] },
+      { "id":"cheeseburger","label":"Cheeseburger","price":14.99,"items":["bacon","ground_beef","cheddar"] },
+      { "id":"mexican","label":"Mexican","price":15.99,"items":["jalapeno_peppers","ground_beef","onion","corn"] },
+      { "id":"bruschetta","label":"Bruschetta","price":14.99,"items":["garlic","tomatoes","green_peppers","feta","oregano"] }
+    ],
+    "specialsUpgradeXL": 2.00
+  },
+
+  "subs": [
+    { "id":"assorted","label":"Assorted Sub","price":9.99 },
+    { "id":"pizza_sub","label":"Pizza Sub","price":9.99 },
+    { "id":"blt","label":"BLT Sub","price":9.99 },
+    { "id":"meatball","label":"Meat Ball Sub","price":9.99 },
+    { "id":"veggie","label":"Vegetarian Sub","price":8.99 },
+    { "id":"extra_meat","label":"Extra Meat","price":1.00, "addon":true },
+    { "id":"extra_cheese","label":"Extra Cheese","price":1.00, "addon":true }
+  ],
+
+  "wings": {
+    "sizes":[
+      { "id":"10","label":"10 pc","price":12.99 },
+      { "id":"20","label":"20 pc","price":21.99 }
+    ],
+    "flavours":["BBQ","Honey Garlic","Hot","Mild"],
+    "dippingSauce": 0.95
+  },
+
+  "nuggets": {
+    "sizes":[
+      { "id":"10","label":"10 pc","price":8.99 },
+      { "id":"20","label":"20 pc","price":16.99 }
     ]
   },
-  "calzones": [
-    { "id": "calz", "label": "Calzone", "base": 11.99, "fills": ["pep","ham","mush","oliv"] }
-  ],
-  "wings": {
-    "sizes": [
-      { "id": "10", "label": "10 pc", "price": 13.99 },
-      { "id": "20", "label": "20 pc", "price": 24.99 }
-    ],
-    "flavours": ["Mild","Medium","Hot","Honey Garlic","BBQ"]
-  },
-  "subs": [
-    { "id": "meatball", "label": "Meatball Sub", "price": 10.99 },
-    { "id": "pizza",    "label": "Pizza Sub",    "price": 9.99 }
-  ],
+
   "salads": [
-    { "id": "caesar", "label": "Caesar Salad", "price": 7.99, "options": [{ "id":"chicken","label":"Add Chicken","price":3.00 }] }
+    { "id":"caesar","label":"Caesar Salad","price":7.99 },
+    { "id":"greek","label":"Greek Salad","price":8.99 },
+    { "id":"garden","label":"Garden Salad","price":8.99 },
+    { "id":"add_chicken","label":"Add Grilled Chicken","price":2.50, "addon":true }
   ],
-  "drinks": [
-    { "id": "pop", "label": "Pop", "price": 1.99 }
-  ]
+
+  "sides":[
+    { "id":"garlic_bread_cheese","label":"Garlic Bread with Cheese","price":4.99 },
+    { "id":"potato_wedges","label":"Potato Wedges","price":5.99 }
+  ],
+
+  "drinks":[ { "id":"soft_drink","label":"Soft Drink","price":1.55 } ]
 }

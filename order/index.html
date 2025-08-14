@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Order Pickup – Shakespeare Pizza (Shakespeare, ON)</title>
+  <meta name="description" content="Build your order for pickup at Shakespeare Pizza. Single or double pizzas, house specials, subs, wings, salads, sides and drinks." />
+  <link rel="canonical" href="https://example.com/order/" /> <!-- TODO: set final domain -->
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Order Pickup – Shakespeare Pizza" />
+  <meta property="og:description" content="Build your order for pickup at Shakespeare Pizza." />
+  <meta property="og:site_name" content="Shakespeare Pizza" />
+  <meta property="og:image" content="../seo/og-image.jpg" />
+
+  <!-- Styles -->
+  <link rel="preload" href="../styles.css" as="style" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="order.css" />
+</head>
+<body>
+  <a class="visually-hidden focusable" href="#builder">Skip to builder</a>
+
+  <!-- Shared header -->
+  <header class="site-header" role="banner">
+    <nav class="site-nav" aria-label="Primary">
+      <a class="brand" href="../" aria-label="Shakespeare Pizza home">
+        <img src="../assets/logo/logo.png" alt="" width="40" height="40" decoding="async" />
+        <span class="brand-name">Shakespeare Pizza</span>
+      </a>
+
+      <button class="nav-toggle" aria-controls="nav-menu" aria-expanded="false">
+        <span class="visually-hidden">Toggle navigation</span>
+      </button>
+
+      <ul id="nav-menu" class="nav-links">
+        <li><a href="../#hours">Hours</a></li>
+        <li><a href="../#map">Location</a></li>
+        <li class="sep" aria-hidden="true"></li>
+        <li><a class="btn btn-primary" href="#builder">Order Now</a></li>
+        <li><a class="btn btn-quiet" href="tel:2266488888">226-648-8888</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- Builder -->
+    <section id="builder" class="section" aria-labelledby="builder-heading">
+      <div class="container order-wrap">
+        <div class="order-main">
+          <header class="order-head">
+            <p class="eyebrow muted">Step 1</p>
+            <h1 id="builder-heading">Build your order</h1>
+            <p class="muted micro">Pickup only • Prices in CAD • Taxes & tips calculated at checkout</p>
+          </header>
+
+          <!-- Tabs (hash-based, no JS required) -->
+          <div class="tabs" role="tablist" aria-label="Order categories">
+            <a class="tab" href="#single"   role="tab" aria-controls="single">Single</a>
+            <a class="tab" href="#double"   role="tab" aria-controls="double">Double</a>
+            <a class="tab" href="#specials" role="tab" aria-controls="specials">Specials</a>
+            <a class="tab" href="#subs"     role="tab" aria-controls="subs">Subs</a>
+            <a class="tab" href="#wings"    role="tab" aria-controls="wings">Wings</a>
+            <a class="tab" href="#nuggets"  role="tab" aria-controls="nuggets">Nuggets</a>
+            <a class="tab" href="#salads"   role="tab" aria-controls="salads">Salads</a>
+            <a class="tab" href="#sides"    role="tab" aria-controls="sides">Sides</a>
+            <a class="tab" href="#drinks"   role="tab" aria-controls="drinks">Drinks</a>
+          </div>
+
+          <!-- Panels (content filled in O3). We show #single by default. -->
+          <section id="single" class="tab-panel is-default" role="tabpanel" aria-labelledby="Single pizza builder">
+            <div class="card card-hint">
+              <p><strong>Single Pizza</strong> — choose size, crust, toppings. Toppings marked “×2” count as two items. Cauliflower crust +$5.</p>
+            </div>
+            <div class="card placeholder">
+              <p>We’ll render the Single Pizza builder here in O3.</p>
+            </div>
+          </section>
+
+          <section id="double" class="tab-panel" role="tabpanel">
+            <div class="card card-hint">
+              <p><strong>Double Deal</strong> — base price includes two cheese pizzas. Extras apply to <em>both</em> pizzas and are charged per size.</p>
+            </div>
+            <div class="card placeholder"><p>Double Deal builder coming in O6.</p></div>
+          </section>
+
+          <section id="specials" class="tab-panel" role="tabpanel">
+            <div class="card placeholder"><p>House Specials (Large; upgrade to XL +$2) will be listed here.</p></div>
+          </section>
+
+          <section id="subs" class="tab-panel" role="tabpanel">
+            <div class="card placeholder"><p>Assorted, Pizza, BLT, Meat Ball, Vegetarian + addons.</p></div>
+          </section>
+
+          <section id="wings" class="tab-panel" role="tabpanel">
+            <div class="card placeholder"><p>10pc / 20pc with flavour; dips available.</p></div>
+          </section>
+
+          <section id="nuggets" class="tab-panel" role="tabpanel">
+            <div class="card placeholder"><p>10pc / 20pc nuggets.</p></div>
+          </section>
+
+          <section id="salads" class="tab-panel" role="tabpanel">
+            <div class="card placeholder"><p>Caesar, Greek, Garden; Add grilled chicken +$2.50.</p></div>
+          </section>
+
+          <section id="sides" class="tab-panel" role="tabpanel">
+            <div class="card placeholder"><p>Garlic Bread with Cheese, Potato Wedges.</p></div>
+          </section>
+
+          <section id="drinks" class="tab-panel" role="tabpanel">
+            <div class="card placeholder"><p>Soft drinks.</p></div>
+          </section>
+        </div>
+
+        <!-- Sticky summary -->
+        <aside id="summary" class="order-summary" aria-labelledby="summary-heading">
+        <h2 id="summary-heading">Your Order</h2>
+
+        <!-- live region for SRs -->
+        <p id="cart-status" class="visually-hidden" aria-live="polite"></p>
+
+        <ul id="cart-list" class="cart-list" role="list">
+            <li class="muted empty">Your cart is empty. <a href="#single">Start with a Single Pizza</a>.</li>
+        </ul>
+
+        <dl class="totals">
+            <div><dt>Subtotal</dt><dd id="t-sub">$0.00</dd></div>
+            <div><dt id="tax-label">HST (13%)</dt><dd id="t-tax">$0.00</dd></div>
+            <div><dt>Tip</dt><dd id="t-tip">$0.00</dd></div>
+            <div class="grand"><dt>Total</dt><dd id="t-total">$0.00</dd></div>
+        </dl>
+
+        <!-- Tip selector -->
+        <div class="tips" aria-label="Tip options">
+            <div id="tip-buttons" class="chips"></div>
+            <button id="tip-clear" class="link" type="button">No tip</button>
+        </div>
+
+        <div class="summary-actions">
+            <a class="btn btn-primary" href="#review">Review Order</a>
+            <a class="btn btn-quiet" href="#builder">Keep Building</a>
+        </div>
+
+        <p class="muted micro">Pickup only. Prices subject to change without notice.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Review & Pay -->
+    <section id="review" class="section review" aria-labelledby="review-heading">
+      <div class="container review-wrap">
+        <header>
+          <p class="eyebrow muted">Step 2</p>
+          <h2 id="review-heading">Review &amp; Pay</h2>
+        </header>
+
+        <div class="review-grid">
+          <div class="card">
+            <h3>Your details</h3>
+            <form id="review-form" class="review-form">
+              <div class="field">
+                <label for="r-name">Name<span aria-hidden="true">*</span></label>
+                <input id="r-name" name="name" required autocomplete="name" />
+              </div>
+              <div class="field">
+                <label for="r-phone">Phone<span aria-hidden="true">*</span></label>
+                <input id="r-phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel" />
+              </div>
+              <div class="field">
+                <label for="r-pickup">Pickup time</label>
+                <select id="r-pickup" name="pickup">
+                  <option value="ASAP">ASAP</option>
+                  <option value="15">In ~15 min</option>
+                  <option value="30">In ~30 min</option>
+                  <option value="45">In ~45 min</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="r-notes">Notes</label>
+                <textarea id="r-notes" name="notes" rows="4" placeholder="Allergies, parking notes, etc."></textarea>
+              </div>
+            </form>
+          </div>
+
+          <div class="card">
+            <h3>Payment</h3>
+            <fieldset class="field">
+              <legend class="visually-hidden">Payment method</legend>
+              <label class="radio">
+                <input type="radio" name="payment" value="pay_at_pickup" checked />
+                <span>Pay at pickup (cash / card)</span>
+              </label>
+              <label class="radio">
+                <input type="radio" name="payment" value="online" />
+                <span>Pay online (Clover)</span>
+              </label>
+            </fieldset>
+
+            <!-- Clover payment links appear here later if config.json has them -->
+            <div id="clover-links" class="chips hide">
+              <!-- buttons inserted in O7 -->
+            </div>
+
+            <div class="review-actions">
+              <a class="btn btn-quiet" href="#builder">Back to builder</a>
+              <button id="place-order" class="btn btn-primary" type="button">Place Order</button>
+            </div>
+
+            <p id="submit-status" class="status hide" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Confirmation -->
+    <section id="confirm" class="section confirm center" aria-labelledby="confirm-heading">
+      <div class="container">
+        <h2 id="confirm-heading">Thanks! Your web order is in.</h2>
+        <p id="confirm-details" class="muted">We’ll start preparing it right away. See you soon.</p>
+        <p><a class="btn btn-primary" href="../">Back to home</a></p>
+      </div>
+    </section>
+
+    <!-- Hidden Netlify form (we'll fill these inputs in O5 before submit) -->
+    <form name="web-order" id="netlify-order" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="web-order" />
+      <p class="visually-hidden"><label>Don’t fill this out: <input name="bot-field" /></label></p>
+
+      <input type="hidden" name="web_order_id"    id="f-order-id" />
+      <input type="hidden" name="payment_method"  id="f-payment" />
+      <input type="hidden" name="customer_name"   id="f-name" />
+      <input type="hidden" name="customer_phone"  id="f-phone" />
+      <input type="hidden" name="pickup"          id="f-pickup" />
+      <input type="hidden" name="kitchen_text"    id="f-kitchen" />
+      <textarea name="json_payload" id="f-json"></textarea>
+    </form>
+  </main>
+
+  <!-- default tab if no hash -->
+  <script>
+    if (!location.hash) location.replace("#single");
+  </script>
+
+  <!-- Shared scripts (mobile nav etc.) -->
+  <script src="../scripts.js" defer></script>
+  <!-- order.js -->
+  <script src="order.js" defer></script>
+</body>
+</html>
