@@ -13,7 +13,7 @@
 /* Tabs */
 .tabs {
   display: flex; gap: .5rem; flex-wrap: wrap;
-  position: sticky; top: 64px; z-index: 5;
+  
   padding: .5rem 0; backdrop-filter: blur(8px);
 }
 .tab {

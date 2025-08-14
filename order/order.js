@@ -2,6 +2,16 @@
    O3–O6 features + Clover Payment Links UI on Review & Confirm
 */
 (() => {
+  document.addEventListener("DOMContentLoaded", () => {
+    $$(".tabs .tab").forEach(tab => {
+      tab.addEventListener("click", function(e) {
+        e.preventDefault();
+        // Update hash without scrolling
+        history.replaceState(null, null, tab.getAttribute("href"));
+        setActiveTabFromHash();
+      });
+    });
+  });
   const CART_KEY = "sp_cart_v1";
   let MENU = null, CFG = {};
 
@@ -28,7 +38,15 @@
   function setActiveTabFromHash() {
     const hash = location.hash || "#single";
     $$(".tabs .tab").forEach(a => a.setAttribute("aria-current", a.getAttribute("href") === hash ? "true":"false"));
-    $$(".tab-panel").forEach(p => p.classList.toggle("is-default", ("#" + p.id) === hash));
+    $$(".tab-panel").forEach(p => {
+      if (("#" + p.id) === hash) {
+        p.classList.add("is-default");
+        p.style.display = "block";
+      } else {
+        p.classList.remove("is-default");
+        p.style.display = "none";
+      }
+    });
   }
   window.addEventListener("hashchange", setActiveTabFromHash);
 
@@ -581,26 +599,26 @@
 
       // success
       // success -> save a lightweight summary for the thanks page
-        const summary = {
-        id,
-        payment,
-        pickup,
-        createdAt: new Date().toISOString(),
-        currency: (MENU && MENU.currency) || "CAD",
-        phone: CFG.phone || "226-648-8888",
-        totals: currentTotals(),   // { sub, tax, tip, tot }
-        items: state.items         // keep a copy for the ticket
-        };
-        sessionStorage.setItem("sp_last_order", JSON.stringify(summary));
+      const summary = {
+      id,
+      payment,
+      pickup,
+      createdAt: new Date().toISOString(),
+      currency: (MENU && MENU.currency) || "CAD",
+      phone: CFG.phone || "226-648-8888",
+      totals: currentTotals(),   // { sub, tax, tip, tot }
+      items: state.items         // keep a copy for the ticket
+      };
+      sessionStorage.setItem("sp_last_order", JSON.stringify(summary));
 
-        // clear cart
-        state.items = [];
-        saveState();
-        renderCart();
+      // clear cart
+      state.items = [];
+      saveState();
+      renderCart();
 
-        // redirect to dedicated Thank You page
-        const payParam = (payment === "online" ? "&pay=1" : "");
-        location.href = "./thanks.html?oid=" + encodeURIComponent(id) + payParam;
+      // redirect to dedicated Thank You page
+      const payParam = (payment === "online" ? "&pay=1" : "");
+      location.href = "./thanks.html?oid=" + encodeURIComponent(id) + payParam;
 
       const details = $("#confirm-details");
       if (details) {
