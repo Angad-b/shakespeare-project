@@ -28,6 +28,6 @@
     "plausibleDomain": ""           
   },
   "hooks": {
-    "ordersWebhook": "https://script.google.com/macros/s/AKfycbwmI3rqnrxQrrq7CxQBToPHsSIi63qgRhQenmRBKmKD468rJtNpGRxHSUtu5tZmywU/exec"
+    "ordersWebhook": "https://script.google.com/macros/s/AKfycbz70hznyJW6NUGq5ZwIEzJeVdFuciRG9vrSSaiyJUCss_AQ7ESIgdrYLsqINfvw2Nqh/exec"
   }
 }
