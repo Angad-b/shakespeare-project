@@ -47,12 +47,13 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "PizzaRestaurant",
     "name": "Shakespeare Pizza",
-    "image": "https://example.com/assets/img/storefront.jpg",
-    "url": "https://example.com/",
+    "url": "https://YOUR-DOMAIN.com/",
+    "image": "https://YOUR-DOMAIN.com/assets/logo.png",
     "telephone": "+1-226-648-8888",
-    "email": "orders@example.com",
+    "priceRange": "$$",
+    "servesCuisine": ["Pizza","Wings","Salads"],
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "2264 Line 34, Unit 2",
@@ -61,18 +62,9 @@
       "postalCode": "N0B 2P0",
       "addressCountry": "CA"
     },
-    "servesCuisine": ["Pizza","Subs","Wings","Salads"],
-    "priceRange": "$$",
-    "areaServed": "Shakespeare, Ontario",
-    "openingHoursSpecification": [
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday"],    "opens": "11:00", "closes": "20:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday"],   "opens": "11:00", "closes": "20:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Wednesday"], "opens": "11:00", "closes": "20:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Thursday"],  "opens": "11:00", "closes": "20:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday"],    "opens": "11:00", "closes": "21:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday"],  "opens": "11:00", "closes": "20:00" },
-      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Sunday"],    "opens": "11:00", "closes": "20:00" }
-    ]
+    "hasMenu": "https://YOUR-DOMAIN.com/order/",
+    "acceptsReservations": "No"
+    /* Optional: add openingHoursSpecification once hours are finalized */
   }
   </script>
 

@@ -592,6 +592,19 @@
     const nf = $("#netlify-order"); if (!nf) { status.textContent = "Form missing. Please call to place order."; status.classList.add("err"); status.classList.remove("hide"); return; }
     $("#f-order-id").value = id; $("#f-payment").value = payment; $("#f-name").value = name; $("#f-phone").value = phone; $("#f-pickup").value = pickup; $("#f-kitchen").value = ticket; $("#f-json").value = JSON.stringify(payload, null, 2);
 
+
+    
+    // Fire-and-forget: send to Google Apps Script (Google Sheets + email/SMS)
+    try {
+      if (CFG?.hooks?.ordersWebhook) {
+        const form = new URLSearchParams();        // avoid CORS preflight; free & simple
+        form.append('data', JSON.stringify(payload));
+        fetch(CFG.hooks.ordersWebhook, { method: 'POST', body: form, mode: 'no-cors' });
+      }
+    } catch (err) { console.warn('Sheets webhook failed (ignored):', err); }
+
+
+
     status.textContent = "Sending…"; status.classList.remove("err","hide");
     try {
       const fd = new FormData(nf); const body = {}; fd.forEach((v,k)=> body[k]=v);

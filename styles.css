@@ -535,3 +535,4 @@ h2 { font-size: clamp(1.5rem, 2.2vw + 1rem, 2.2rem); margin: 0 0 1.25rem; }
 .addr-address { margin: .25rem 0 1rem; font-weight: 600; line-height: 1.4; }
 .addr-actions { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .5rem; }
 .addr-dont { display: flex; gap: .5rem; align-items: center; font-size: .95rem; color: var(--muted,#9aa0a6); }
+
