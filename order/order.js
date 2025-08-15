@@ -26,24 +26,14 @@
     const url = CFG?.hooks?.ordersWebhook;
     if (!url) return;
 
-    const json = JSON.stringify(payload);
+    const body = "data=" + encodeURIComponent(JSON.stringify(payload));
 
-    // Best: navigator.sendBeacon (survives page unload)
-    try {
-      if (navigator.sendBeacon) {
-        const blob = new Blob([json], { type: "application/json" });
-        const ok = navigator.sendBeacon(url, blob);
-        if (ok) return;
-      }
-    } catch (_) {}
-
-    // Fallback: fetch keepalive (<=64KB body)
+    // Send as form-encoded to avoid CORS preflight
     try {
       fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        mode: "no-cors",
-        body: json,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body,
         keepalive: true
       });
     } catch (err) {
