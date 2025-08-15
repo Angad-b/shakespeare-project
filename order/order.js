@@ -42,6 +42,7 @@
       fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        mode: "no-cors",
         body: json,
         keepalive: true
       });
