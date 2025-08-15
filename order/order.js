@@ -732,8 +732,8 @@
   async function init() {
     setActiveTabFromHash();
 
-  try { CFG = await loadJSON("../data/config.json"); } catch { CFG = await loadJSON("../../data/config.json"); }
-  try { MENU = await loadJSON("../data/menu.json"); } catch { MENU = await loadJSON("../../data/menu.json"); }
+    try { CFG = await loadJSON("../data/config.json"); } catch {}
+    try { MENU = await loadJSON("../data/menu.json"); } catch { MENU = await loadJSON("data/menu.json"); }
 
     state.taxRate = (typeof CFG.taxRate === "number") ? CFG.taxRate : 0.13;
 

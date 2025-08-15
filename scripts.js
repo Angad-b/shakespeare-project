@@ -32,6 +32,10 @@ const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
 
 // 3) Hours “Open now” helper (we’ll attach to UI when we build the Hours section)
 async function loadJSON(path) {
+  // If we're in a subdirectory (like /order/), adjust path for data files
+  if (!path.startsWith("/") && window.location.pathname.split("/").length > 2 && path.startsWith("data/")) {
+    path = "../" + path;
+  }
   const res = await fetch(path, { cache: "no-store" });
   if (!res.ok) throw new Error(`Failed to load ${path}`);
   return res.json();
