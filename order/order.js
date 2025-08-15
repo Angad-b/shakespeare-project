@@ -607,9 +607,11 @@
       taxRate: state.taxRate, taxName: CFG.taxName || "HST", currency: (MENU && MENU.currency) || "CAD"
     };
 
+    const ticket = kitchenTicket(payload);
+    payload.ticket = ticket; 
+
     postOrderWebhook(payload);
 
-    const ticket = kitchenTicket(payload);
 
     const nf = $("#netlify-order"); if (!nf) { status.textContent = "Form missing. Please call to place order."; status.classList.add("err"); status.classList.remove("hide"); return; }
     $("#f-order-id").value = id; $("#f-payment").value = payment; $("#f-name").value = name; $("#f-phone").value = phone; $("#f-pickup").value = pickup; $("#f-kitchen").value = ticket; $("#f-json").value = JSON.stringify(payload, null, 2);
