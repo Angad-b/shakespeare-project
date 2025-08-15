@@ -22,6 +22,35 @@
     style: "currency", currency: (MENU && MENU.currency) || "CAD"
   }).format(isFinite(n) ? n : 0);
 
+  function postOrderWebhook(payload) {
+    const url = CFG?.hooks?.ordersWebhook;
+    if (!url) return;
+
+    const json = JSON.stringify(payload);
+
+    // Best: navigator.sendBeacon (survives page unload)
+    try {
+      if (navigator.sendBeacon) {
+        const blob = new Blob([json], { type: "application/json" });
+        const ok = navigator.sendBeacon(url, blob);
+        if (ok) return;
+      }
+    } catch (_) {}
+
+    // Fallback: fetch keepalive (<=64KB body)
+    try {
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: json,
+        mode: "no-cors",
+        keepalive: true
+      });
+    } catch (err) {
+      console.warn("Webhook send failed (ignored):", err);
+    }
+  }
+
   const encode = (data) =>
     Object.keys(data).map(k => encodeURIComponent(k) + "=" + encodeURIComponent(data[k])).join("&");
 
@@ -588,14 +617,7 @@
       taxRate: state.taxRate, taxName: CFG.taxName || "HST", currency: (MENU && MENU.currency) || "CAD"
     };
 
-    // Fire-and-forget: send to Google Apps Script (Google Sheets + email/SMS)
-    try {
-      if (CFG?.hooks?.ordersWebhook) {
-        const form = new URLSearchParams();        // avoid CORS preflight; free & simple
-        form.append('data', JSON.stringify(payload));
-        fetch(CFG.hooks.ordersWebhook, { method: 'POST', body: form, mode: 'no-cors' });
-      }
-    } catch (err) { console.warn('Sheets webhook failed (ignored):', err); }
+    postOrderWebhook(payload);
 
     const ticket = kitchenTicket(payload);
 
