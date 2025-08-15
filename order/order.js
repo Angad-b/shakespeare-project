@@ -22,7 +22,7 @@
     style: "currency", currency: (MENU && MENU.currency) || "CAD"
   }).format(isFinite(n) ? n : 0);
 
-  async function postOrderWebhook(payload) {
+  function postOrderWebhook(payload) {
     const url = CFG?.hooks?.ordersWebhook;
     if (!url) return;
 
@@ -39,10 +39,11 @@
 
     // Fallback: fetch keepalive (<=64KB body)
     try {
-      await fetch(url, {
+      fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: json,
+        mode: "no-cors",
         keepalive: true
       });
     } catch (err) {
@@ -616,7 +617,7 @@
       taxRate: state.taxRate, taxName: CFG.taxName || "HST", currency: (MENU && MENU.currency) || "CAD"
     };
 
-    await postOrderWebhook(payload);
+    postOrderWebhook(payload);
 
     const ticket = kitchenTicket(payload);
 
