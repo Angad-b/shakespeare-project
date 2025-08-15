@@ -503,5 +503,65 @@
 
   <!-- Global scripts -->
   <script src="scripts.js" defer></script>
+
+
+
+
+  
+  <!-- Address modal (homepage only) -->
+  <div id="addr-modal" class="addr-overlay addr-hide" role="dialog" aria-modal="true" aria-labelledby="addr-title">
+    <div class="addr-card">
+      <button class="addr-x" aria-label="Close">×</button>
+      <h2 id="addr-title">Pickup location</h2>
+      <p class="addr-address">2264 Line 34, Unit 2<br>Shakespeare, ON N0B 2P0</p>
+      <div class="addr-actions">
+        <a class="btn btn-primary" target="_blank" rel="noopener"
+          href="https://maps.google.com/?q=2264+Line+34+Unit+2+Shakespeare+ON">Get directions</a>
+        <a class="btn btn-quiet" href="tel:12266488888">Call now</a>
+        <button id="addr-copy" class="btn btn-quiet" type="button">Copy address</button>
+      </div>
+      <label class="addr-dont">
+        <input id="addr-dont" type="checkbox"> Don’t show this again
+      </label>
+    </div>
+  </div>
+
+  <script>
+  (() => {
+    const KEY = "sp_seen_addr_v1";
+    const overlay = document.getElementById("addr-modal");
+    if (!overlay) return;
+
+    const open  = () => { overlay.classList.remove("addr-hide"); document.body.style.overflow = "hidden"; overlay.querySelector(".addr-x").focus(); };
+    const close = () => { overlay.classList.add("addr-hide"); document.body.style.overflow = ""; };
+
+    // Show only on first visit (or until user unchecks)
+    if (!localStorage.getItem(KEY)) {
+      // Delay a tick so hero renders first
+      setTimeout(open, 400);
+    }
+
+    overlay.querySelector(".addr-x").addEventListener("click", () => {
+      if (document.getElementById("addr-dont").checked) localStorage.setItem(KEY, "1");
+      close();
+    });
+
+    // Close on ESC
+    document.addEventListener("keydown", (e) => {
+      if (!overlay.classList.contains("addr-hide") && e.key === "Escape") close();
+    });
+
+    // Click outside card closes
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) close();
+    });
+
+    // Copy address
+    document.getElementById("addr-copy").addEventListener("click", async () => {
+      const text = "2264 Line 34, Unit 2, Shakespeare, ON N0B 2P0";
+      try { await navigator.clipboard.writeText(text); } catch {}
+    });
+  })();
+  </script>
 </body>
 </html>

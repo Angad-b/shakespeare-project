@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Avoid indexing transient order receipt pages
+Disallow: /order/thanks.html
+
+Sitemap: https://YOUR-DOMAIN.com/sitemap.xml

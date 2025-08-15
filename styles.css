@@ -513,3 +513,25 @@ h2 { font-size: clamp(1.5rem, 2.2vw + 1rem, 2.2rem); margin: 0 0 1.25rem; }
 @media (prefers-reduced-motion: reduce) {
   .pp-card, .pp-media::after { transition: none !important; }
 }
+
+/* Address modal */
+.addr-overlay {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  background: rgba(0,0,0,.85); z-index: 9999; padding: 1rem;
+}
+.addr-hide { display: none; }
+.addr-card {
+  width: min(520px, 92vw);
+  background: var(--glass, #16181c); color: var(--text, #fff);
+  border: 1px solid var(--glass-border, rgba(255,255,255,.12));
+  border-radius: 18px; box-shadow: 0 18px 60px rgba(0,0,0,.45);
+  padding: 1.25rem 1.25rem 1rem; position: relative;
+}
+.addr-x {
+  position: absolute; top: .4rem; right: .5rem;
+  width: 36px; height: 36px; border-radius: 999px; border: 0; cursor: pointer;
+  background: rgba(255,255,255,.08); color: inherit; font-size: 1.25rem; line-height: 1;
+}
+.addr-address { margin: .25rem 0 1rem; font-weight: 600; line-height: 1.4; }
+.addr-actions { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .5rem; }
+.addr-dont { display: flex; gap: .5rem; align-items: center; font-size: .95rem; color: var(--muted,#9aa0a6); }
