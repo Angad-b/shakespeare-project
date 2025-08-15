@@ -580,6 +580,7 @@
     const id  = generateOrderId();
     const { sub, tax, tip, tot } = currentTotals();
     const payload = {
+
       id, ts: new Date().toISOString(), payment,
       customer: { name, phone, pickup, notes },
       items: state.items,
@@ -587,13 +588,6 @@
       taxRate: state.taxRate, taxName: CFG.taxName || "HST", currency: (MENU && MENU.currency) || "CAD"
     };
 
-    const ticket = kitchenTicket(payload);
-
-    const nf = $("#netlify-order"); if (!nf) { status.textContent = "Form missing. Please call to place order."; status.classList.add("err"); status.classList.remove("hide"); return; }
-    $("#f-order-id").value = id; $("#f-payment").value = payment; $("#f-name").value = name; $("#f-phone").value = phone; $("#f-pickup").value = pickup; $("#f-kitchen").value = ticket; $("#f-json").value = JSON.stringify(payload, null, 2);
-
-
-    
     // Fire-and-forget: send to Google Apps Script (Google Sheets + email/SMS)
     try {
       if (CFG?.hooks?.ordersWebhook) {
@@ -603,8 +597,11 @@
       }
     } catch (err) { console.warn('Sheets webhook failed (ignored):', err); }
 
+    const ticket = kitchenTicket(payload);
 
-
+    const nf = $("#netlify-order"); if (!nf) { status.textContent = "Form missing. Please call to place order."; status.classList.add("err"); status.classList.remove("hide"); return; }
+    $("#f-order-id").value = id; $("#f-payment").value = payment; $("#f-name").value = name; $("#f-phone").value = phone; $("#f-pickup").value = pickup; $("#f-kitchen").value = ticket; $("#f-json").value = JSON.stringify(payload, null, 2);
+    
     status.textContent = "Sending…"; status.classList.remove("err","hide");
     try {
       const fd = new FormData(nf); const body = {}; fd.forEach((v,k)=> body[k]=v);
