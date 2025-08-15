@@ -43,7 +43,6 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: json,
-        mode: "no-cors",
         keepalive: true
       });
     } catch (err) {
