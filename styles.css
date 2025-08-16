@@ -1,3 +1,13 @@
+@media (min-width: 601px) and (max-width: 900px) {
+  .hero-inner .copy {
+    margin-top: 5.5rem;
+  }
+  .hero-inner .copy h1,
+  .hero-inner .copy .lead,
+  .hero-inner .copy .cta-row {
+    margin-top: 2rem;
+  }
+}
 @media (max-width: 600px) {
   .site-nav.open #nav-menu {
     background: rgba(109, 107, 107, 0.95) !important;
