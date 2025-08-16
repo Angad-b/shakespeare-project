@@ -178,3 +178,18 @@
 .ticket .price { justify-self:end; font-weight:700; }
 .totals.compact { margin-top:.5rem; }
 .actions { margin-top:1rem; display:flex; gap:.5rem; justify-content:center; }
+
+.notice {
+  margin: .5rem 0 1rem;
+  padding: .6rem .8rem;
+  border-radius: 10px;
+  background: rgba(255, 0, 0, .08);
+  border: 1px solid rgba(255, 0, 0, .2);
+}
+.hide { display: none !important; }
+
+/* Make disabled “Place order” look disabled */
+button[aria-disabled="true"], button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}

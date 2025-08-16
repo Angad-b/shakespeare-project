@@ -68,16 +68,19 @@ function isOpenNow(hours, tz = "America/Toronto") {
 async function updateOpenBadge() {
   const ids = ["open-badge", "open-badge-footer"];
   try {
-    const hours = await loadJSON("data/hours.json");
-    const open = isOpenNow(hours, hours.timezone || "America/Toronto");
+    const H = await loadHours();
+    const s = computeOpenStatus(H);
     ids.forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
-      el.textContent = open ? "Open now" : "Closed";
+      el.classList.toggle('closed', !s.open);
+      el.textContent = s.open
+        ? `Open now • Today ${s.todayLabel}`
+        : `Closed • Opens ${s.nextLabel}`;
       el.classList.remove("hide");
-      el.setAttribute("aria-live","polite");
+      el.setAttribute("aria-live", "polite");
     });
-  } catch (e) { console.error(e); }
+  } catch (e) { console.warn('updateOpenBadge()', e); }
 }
 
 // Call later when Hours UI is added
@@ -153,6 +156,99 @@ async function renderHours() {
 // Kick it off on load
 renderHours();
 
+async function loadHours() {
+  return loadJSON("/data/hours.json"); // root-absolute so it works on all pages
+}
+function normalizeHours(hours) {
+  const src = hours || {};
+  const out = { ...src };
+  const map = {
+    monday: 'mon', tuesday: 'tue', wednesday: 'wed', thursday: 'thu',
+    friday: 'fri', saturday: 'sat', sunday: 'sun'
+  };
+  for (const k of Object.keys(src)) {
+    const clean = k.toLowerCase().trim();
+    const short = map[clean] || clean;
+    if (!out[short]) out[short] = src[k];
+  }
+  return out;
+}
+
+function _parseHHMM(s) {
+  let [h, m] = String(s).split(":").map(Number);
+  if (Number.isNaN(h)) h = 0;
+  if (Number.isNaN(m)) m = 0;
+  // Treat 24:00 as 23:59 so comparisons/formatting are sane
+  if (h === 24 && m === 0) { h = 23; m = 59; }
+  return h * 60 + m;
+}
+
+function _fmtTime(mins, tz) {
+  // Format minutes as a local store time (hours.json is already in store TZ).
+  // No timezone conversion; just pretty 12-hour clock.
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = (h % 12) || 12;
+  return `${h12}:${String(m).padStart(2, '0')} ${ampm}`;
+}
+
+// Get "today" and current minutes in the target timezone safely (no string parsing)
+function nowInTZ(tz) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: tz,
+    hour12: false,
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit'
+  }).formatToParts(new Date());
+  const get = t => parts.find(p => p.type === t)?.value || '';
+  const dayKey = get('weekday').toLowerCase().slice(0,3); // mon,tue,wed...
+  const minsNow = (parseInt(get('hour'),10) || 0) * 60 + (parseInt(get('minute'),10) || 0);
+  return { dayKey, minsNow };
+}
+
+function computeOpenStatus(hours) {
+  hours = normalizeHours(hours); // supports "fri" or "friday"
+  const tz = hours.timezone || 'America/Toronto';
+  const days = ['sun','mon','tue','wed','thu','fri','sat'];
+
+  const { dayKey, minsNow } = nowInTZ(tz);
+  const idxToday = days.indexOf(dayKey);
+
+  const split = (rng) => rng.split(/[-–]/).map(_parseHHMM);    // supports "-" or "–"
+  const rangesFor = (key) => (hours[key] || []).map(split).filter(([s,e]) => e > s);
+
+  const todayRanges = rangesFor(dayKey);
+  const openNow = todayRanges.some(([s,e]) => minsNow >= s && minsNow < e);
+
+  // Find next opening
+  let nextOpen = null;
+  // later today
+  for (const [s] of todayRanges) { if (minsNow < s) { nextOpen = { dayKey, mins: s }; break; } }
+  // next days
+  if (!nextOpen) {
+    for (let add=1; add<=7; add++) {
+      const di = (idxToday + add) % 7;
+      const k = days[di];
+      const r = rangesFor(k);
+      if (r.length) { nextOpen = { dayKey: k, mins: r[0][0] }; break; }
+    }
+  }
+
+  // Labels
+  const fmtRange = ([s,e]) => `${_fmtTime(s,tz)}–${_fmtTime(e,tz)}`;
+  const todayLabel = todayRanges.map(fmtRange).join(', ');
+  let nextLabel = 'Check hours';
+  if (nextOpen) {
+    const t = _fmtTime(nextOpen.mins, tz);
+    nextLabel = (nextOpen.dayKey === dayKey)
+      ? t
+      : `${nextOpen.dayKey[0].toUpperCase()}${nextOpen.dayKey.slice(1)} ${t}`;
+  }
+
+  return { open: openNow, nextLabel, todayLabel, tz };
+}
 
 // Google Reviews toggle
 (() => {
@@ -240,3 +336,4 @@ renderHours();
   }
 })();
 
+updateOpenBadge();

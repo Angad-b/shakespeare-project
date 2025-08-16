@@ -754,6 +754,36 @@
     setupPaymentUI();                // <-- NEW
     $("#place-order")?.addEventListener("click", handlePlaceOrder);
   }
+  
+  async function guardClosed() {
+  try {
+    // Load hours and compute current status
+    const H = await fetch('/data/hours.json', { cache: 'no-store' }).then(r => r.json());
+    const s = computeOpenStatus(H); // comes from scripts.js
+
+    const banner  = document.getElementById('closed-banner');
+    const nextEl  = document.getElementById('next-open');
+    const placeBtn = document.getElementById('place-order'); // <- ensure your button has this id
+
+    if (!banner || !placeBtn) return;
+
+    if (s.open) {
+      banner.classList.add('hide');
+      placeBtn.disabled = false;
+      placeBtn.removeAttribute('aria-disabled');
+    } else {
+      banner.classList.remove('hide');
+      if (nextEl) nextEl.textContent = s.nextLabel || '';
+      placeBtn.disabled = true;
+      placeBtn.setAttribute('aria-disabled', 'true');
+    }
+  } catch (e) {
+    console.warn('Open/closed check failed:', e);
+  }
+}
+
+// Run once on load
+document.addEventListener('DOMContentLoaded', guardClosed);
 
   document.addEventListener("DOMContentLoaded", init);
 })();
